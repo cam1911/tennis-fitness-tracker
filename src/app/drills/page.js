@@ -1,21 +1,51 @@
-import React from 'react';
-import DrillCard from '@/components/DrillCard';
+"use client"
 
-const drills = [
-  { title: 'Forehand Rally', description: 'Practice cross-court forehands.', difficulty: 'Intermediate' },
-  { title: 'Backhand Slice', description: 'Improve your backhand slice technique.', difficulty: 'Advanced' },
-  { title: 'Serve Practice', description: 'Work on your serve consistency and placement.', difficulty: 'Beginner' },
+import { useState } from "react";
+
+const drillCategories = [
+  "Forehand",
+  "Backhand",
+  "Serve",
+  "Volley",
+  "Approach Shot",
+  "Lobs and Overheads",
+  "Passing Shot",
+  "Drop Shot",
+  "Mental Game",
+  "Fitness",
+  "Return",
+  "Doubles",
+  "Slice",
+  "Topspin",
 ];
 
 const DrillsPage = () => {
+  const [activeCategory, setActiveCategory] = useState(null);
+
   return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-3xl font-bold mb-6">Tennis Drills</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {drills.map((drill, index) => (
-          <DrillCard key={index} {...drill} />
+    <div className="p-6">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">🎾 Tennis Drill Categories</h2>
+      <div className="flex flex-wrap gap-4">
+        {drillCategories.map((category, index) => (
+          <button
+            key={index}
+            onClick={() => setActiveCategory(category)}
+            className={`px-5 py-2 text-white rounded-full font-semibold transition-all
+              ${activeCategory === category ? "bg-purple-700 shadow-lg" : "bg-blue-500 hover:bg-purple-600"}
+            `}
+          >
+            {category}
+          </button>
         ))}
       </div>
+
+      {/* Display drills for selected category */}
+      {activeCategory && (
+        <div className="mt-6 p-4 bg-white shadow-lg rounded-lg border">
+          <h3 className="text-xl font-semibold text-gray-800">{activeCategory} Drills</h3>
+          <p className="text-gray-600">Here are the drills related to {activeCategory}.</p>
+        </div>
+      )}
     </div>
   );
 };
