@@ -2,17 +2,27 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+1. Clone this repository and create a `.env.local` file on in the root of your directory
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Copy/Paste this snippet
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```
+   NEXTAUTH_SECRET=
+   NEXTAUTH_URL=http://localhost:3000
+   GOOGLE_CLIENT_ID=
+   GOOGLE_CLIENT_SECRET=
+   ```
+
+3. Use OpenSSL to generate your NEXTAUTH_SECRET
+
+4. Create a Google Services account to obtain your OAUTH Client ID and Secret
+
+
+5. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

@@ -24,7 +24,7 @@ const DrillsPage = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">🎾 Tennis Drill Categories</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">🎾 Tennis Drill Library</h2>
       <div className="flex flex-wrap gap-4">
         {drillCategories.map((category, index) => (
           <button
