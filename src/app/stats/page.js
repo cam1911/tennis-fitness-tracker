@@ -2,8 +2,8 @@ import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 export default async function StatsPage() {
-  const session = await getSession();
-  if (!session) redirect("/");
+  //const session = await getSession();
+  //if (!session) redirect("/");
 
   return (
     <main className="min-h-screen bg-gray-100 p-6">
