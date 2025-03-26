@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 export default function Layout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-gray-100">
+      <body className="text-gray-950 dark:text-white">
         <SessionProvider>
           <Navbar />
           <main className="min-h-screen p-6">{children}</main>

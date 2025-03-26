@@ -25,8 +25,6 @@ const Drills = () => {
       // ✅ Fetch YouTube Drills
       const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY; // 🔥 Use NEXT_PUBLIC_
       const YOUTUBE_SEARCH_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=tennis+drills&type=video&maxResults=10&key=${YOUTUBE_API_KEY}`;
-      
-      console.log("YouTube API URL:", YOUTUBE_SEARCH_URL);
 
       let youtubeDrills = [];
       try {
