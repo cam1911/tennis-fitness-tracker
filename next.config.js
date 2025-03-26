@@ -8,6 +8,13 @@ module.exports = {
           pathname: '/**',
           search: '',
         },
+        {
+            protocol: 'https',
+            hostname: 'i.ytimg.com',
+            port: '',
+            pathname: '/**',
+            search: '',
+          },
       ],
     },
   }

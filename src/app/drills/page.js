@@ -10,32 +10,65 @@ const Drills = () => {
   const [filteredDrills, setFilteredDrills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null); // Null = show all drills
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
     const fetchDrills = async () => {
-      const { data, error } = await supabase.from("DrillLibrary").select("*");
+      setLoading(true);
 
+      // ✅ Fetch Supabase Drills
+      const { data: supabaseDrills, error } = await supabase.from("DrillLibrary").select("*");
       if (error) {
-        console.error("Error fetching drills:", error);
-      } else {
-        console.log("Fetched drills:", data);
-        setDrills(data);
-        setFilteredDrills(data); // Show all drills initially
-
-        // Extract unique categories
-        const uniqueCategories = [...new Set(data.map((drill) => drill.category))];
-        setCategories(uniqueCategories);
+        console.error("Error fetching Supabase drills:", error);
       }
+
+      // ✅ Fetch YouTube Drills
+      const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY; // 🔥 Use NEXT_PUBLIC_
+      const YOUTUBE_SEARCH_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=tennis+drills&type=video&maxResults=10&key=${YOUTUBE_API_KEY}`;
+      
+      console.log("YouTube API URL:", YOUTUBE_SEARCH_URL);
+
+      let youtubeDrills = [];
+      try {
+        const response = await fetch(YOUTUBE_SEARCH_URL);
+        if (!response.ok) {
+          throw new Error(`YouTube API error: ${response.status} ${response.statusText}`);
+        }
+        const youtubeData = await response.json();
+        
+        if (youtubeData?.items) {
+          youtubeDrills = youtubeData.items.map((video) => ({
+            id: video.id.videoId,
+            title: video.snippet.title,
+            thumbnail_url: video.snippet.thumbnails.medium.url,
+            video_url: `https://www.youtube.com/watch?v=${video.id.videoId}`,
+            category: "YouTube",
+            source: "youtube",
+          }));
+        } else {
+          console.warn("YouTube API returned no items:", youtubeData);
+        }
+      } catch (error) {
+        console.error("Failed to fetch YouTube drills:", error);
+      }
+
+      // ✅ Merge and Set Drills
+      const mergedDrills = [...(supabaseDrills || []), ...youtubeDrills];
+      setDrills(mergedDrills);
+      setFilteredDrills(mergedDrills);
+
+      // ✅ Extract Categories
+      const uniqueCategories = [...new Set(mergedDrills.map((drill) => drill.category))];
+      setCategories(uniqueCategories);
+
       setLoading(false);
     };
 
     fetchDrills();
   }, []);
 
-  // Handle category selection
   const handleCategorySelect = (category) => {
-    setSelectedCategory(category === selectedCategory ? null : category); // Toggle selection
+    setSelectedCategory(category === selectedCategory ? null : category);
     setFilteredDrills(category === selectedCategory ? drills : drills.filter((drill) => drill.category === category));
   };
 
@@ -52,11 +85,7 @@ const Drills = () => {
             key={category}
             onClick={() => handleCategorySelect(category)}
             className={`px-5 py-3 font-semibold rounded-full transition-all
-              ${
-                selectedCategory === category
-                  ? "bg-cyan-500 text-white shadow-xl" // Selected color
-                  : "bg-blue-500 hover:bg-blue-700 text-white"
-              }`}
+              ${selectedCategory === category ? "bg-cyan-500 text-white shadow-xl" : "bg-blue-500 hover:bg-blue-700 text-white"}`}
           >
             {category}
           </button>
@@ -84,9 +113,12 @@ const Drills = () => {
                   </div>
                 )}
 
-                {/* Content (Fixed Height) */}
+                {/* Content */}
                 <div className="p-4 flex-1 flex flex-col justify-between">
                   <h2 className="text-gray-900 dark:text-white text-xl font-bold line-clamp-2">{drill.title}</h2>
+                  {drill.source === "youtube" && (
+                    <span className="text-sm text-blue-500">YouTube Drill</span>
+                  )}
                 </div>
 
               </div>
