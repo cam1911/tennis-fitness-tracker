@@ -67,7 +67,7 @@ const Drills = () => {
         {filteredDrills.length > 0 ? (
           filteredDrills.map((drill) => (
             <Link key={drill.id} href={`/drills/${drill.id}`} className="block">
-              <div className="bg-white shadow-md rounded-lg overflow-hidden drill-card transition-transform transform hover:scale-105 w-full h-80 flex flex-col">
+              <div className="bg-white dark:bg-gray-900 shadow-md rounded-lg overflow-hidden drill-card transition-transform transform hover:scale-105 w-full h-80 flex flex-col">
                 
                 {/* Image */}
                 {drill.thumbnail_url ? (
@@ -86,7 +86,7 @@ const Drills = () => {
 
                 {/* Content (Fixed Height) */}
                 <div className="p-4 flex-1 flex flex-col justify-between">
-                  <h2 className="text-xl font-semibold line-clamp-2">{drill.title}</h2>
+                  <h2 className="text-gray-900 dark:text-white text-xl font-bold line-clamp-2">{drill.title}</h2>
                 </div>
 
               </div>
